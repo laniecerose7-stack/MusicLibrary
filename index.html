@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Music Library</title>
+		<link rel="stylesheet" href="style.css" />
+	</head>
+	<body>
+		<header class="navbar">
+			<div class="logo" aria-hidden="true">🎵</div>
+			<div class="header">Music Library</div>
+			<nav class="nav--item--list" aria-label="Primary navigation">
+				<a href="#" class="nav--item">Home</a>
+				<a href="#" class="nav--item">Genres</a>
+				<a href="#" class="nav--item">Artists</a>
+				<a href="#" class="nav--item">Albums</a>
+				<button id="search-button" class="btn btn--cta" type="button">Search</button>
+			</nav>
+		</header>
+
+		<main class="container" aria-labelledby="page--title">
+			<div class="header--content">
+				<h1 id="page--title">Music Library</h1>
+				<p class="subtitle">Use the sorting filter to show genres.</p>
+			</div>
+			<div class = "search--container">
+				<label for="search-input" class="visually-hidden">Search genres</label>
+				<input type="text" id="search-input" placeholder="Search genres..." aria-label="Search genres" />
+			</div>
+			<div class="landing--page">
+				<h2>Welcome to the Music Library</h2>
+				<p>Explore a wide variety of music genres and artists. Use the search and sorting options to find your favorite tunes!</p>
+			</div>
+
+			<section class="controls" aria-label="Sorting controls">
+				<label for="sort-select">Sort by</label>
+				<select id="sort-select" name="sort">
+					<option value="az">Alphabetical A to Z</option>
+					<option value="za">Alphabetical Z to A</option>
+					<option value="newest">Newest to oldest</option>
+					<option value="oldest">Oldest to newest</option>
+				</select>
+			</section>
+
+			<ul id="item-list" class="item-list" aria-live="polite"></ul>
+		</main>
+
+		<footer class="footer">
+			<nav class="footer--item--list" aria-label="Footer navigation">
+				<a href="#" class="footer--item">Home</a>
+				<a href="#" class="footer--item">Genres</a>
+				<a href="#" class="footer--item">Artists</a>
+				<a href="#" class="footer--item">Albums</a>
+			</nav>
+			<p>© 2026 Take-Home Project</p>
+		</footer>
+
+		<script src="index.js"></script>
+	</body>
+</html>

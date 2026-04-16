@@ -8,6 +8,29 @@ const searchButton = document.getElementById('search-button');
 let currentSort = 'az';
 let currentQuery = '';
 
+const fetchItunesJsonp = (genre) =>
+	new Promise((resolve, reject) => {
+		const callbackName = `itunesCallback_${genre.replace(/\W/g, '')}_${Date.now()}`;
+		const script = document.createElement('script');
+
+		window[callbackName] = (data) => {
+			resolve(data);
+			delete window[callbackName];
+			script.remove();
+		};
+
+		script.onerror = () => {
+			reject(new Error(`Failed to load genre: ${genre}`));
+			delete window[callbackName];
+			script.remove();
+		};
+
+		script.src = `https://itunes.apple.com/search?term=${encodeURIComponent(
+			genre
+		)}&entity=musicTrack&limit=1&callback=${callbackName}`;
+		document.body.appendChild(script);
+	});
+
 const formatDate = (dateString) => {
 	const normalizedDate = dateString.includes('T')
 		? dateString
@@ -110,12 +133,7 @@ const fetchMusic = async () => {
 
 		const genreResults = await Promise.all(
 			genres.map(async (genre) => {
-				const response = await fetch(
-					`https://itunes.apple.com/search?term=${encodeURIComponent(
-						genre
-					)}&entity=musicTrack&limit=1`
-				);
-				const data = await response.json();
+				const data = await fetchItunesJsonp(genre);
 				const track = data.results[0];
 
 				if (!track) {

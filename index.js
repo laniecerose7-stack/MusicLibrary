@@ -6,7 +6,7 @@ const searchInput = document.getElementById('search-input');
 const searchButton = document.getElementById('search-button');
 
 let currentSort = 'az';
-let currentQuery = '';
+let currentQuery = ''; 
 
 const fetchItunesJsonp = (genre) =>
 	new Promise((resolve, reject) => {
@@ -71,6 +71,13 @@ const sortItems = (list, sortType) => {
 		);
 	}
 
+	if (sortType === 'genre-az') {
+		sorted.sort((left, right) => left.genre.localeCompare(right.genre));
+	}
+    
+	if (sortType === 'genre-za') {
+		sorted.sort((left, right) => right.genre.localeCompare(left.genre));
+	}
 	return sorted;
 };
 
@@ -82,10 +89,16 @@ const filterItems = (query) => {
 	}
 
 	return items.filter((item) =>
-		item.title.toLowerCase().includes(normalizedQuery) ||
-		item.genre.toLowerCase().includes(normalizedQuery)
-	);
-};
+	item.title.toLowerCase().includes(normalizedQuery) ||
+	item.genre.toLowerCase().includes(normalizedQuery)
+);
+}
+const hamburger = document.getElementById('hamburger--menu');
+const navList = document.querySelector('.nav--item--list');
+hamburger.addEventListener('click', () => {
+	navList.classList.toggle('open');
+
+});
 
 const renderItems = () => {
 	const filteredItems = filterItems(currentQuery);
@@ -98,10 +111,38 @@ const renderItems = () => {
 
 	itemList.innerHTML = sortedItems
 		.map(
-			(item) =>
-				`<li class="item-card"><h2>${item.title}</h2><p>Genre: ${item.genre}</p><p>Created: ${formatDate(item.createdAt)}</p></li>`
+			(item) => `
+			<li class="item-card">
+				<h2>${item.title}</h2>
+				<p><strong>Genre:</strong> ${item.genre}</p>
+				<p><strong>Released:</strong> ${formatDate(item.createdAt)}</p>
+			</li>`
 		)
 		.join('');
+}
+
+searchButton.addEventListener('click', () => {
+	currentQuery = searchInput.value.trim();
+	if (currentQuery) {
+		fetchMusicByQuery(currentQuery);
+	}
+	else {
+		renderItems();
+	}
+	
+});
+const fetchMusicByQuery = async (query) => {
+	try {
+		const data = await fetchItunesJsonp(query);
+		const track = data.results[0];
+		
+		if (track) {
+			items = [{title : track.trackName, createdAt: track.releaseDate, genre: query}];
+		}
+		renderItems();
+	} catch (error) {
+		console.error('Failed to fetch music by query:', error);
+	}
 };
 
 sortSelect.addEventListener('change', (event) => {
@@ -114,22 +155,21 @@ searchInput.addEventListener('input', (event) => {
 	renderItems();
 });
 
-searchButton.addEventListener('click', () => {
-	currentQuery = searchInput.value;
-	renderItems();
-	searchInput.focus();
-});
+
 
 searchInput.addEventListener('keydown', (event) => {
-	if (event.key === 'Enter') {
-		currentQuery = searchInput.value;
+		currentQuery = event.target.value;
 		renderItems();
 	}
-});
+);
 
 const fetchMusic = async () => {
 	try {
-		const genres = ['rnb', 'afrobeats', 'dancehall', 'hip hop'];
+	const genres = [
+			'rnb', 'afrobeats', 'dancehall', 'hip hop',
+			'pop', 'jazz', 'rock', 'classical',
+			'reggae', 'soul', 'country', 'electronic'
+		];
 
 		const genreResults = await Promise.all(
 			genres.map(async (genre) => {
@@ -156,5 +196,6 @@ const fetchMusic = async () => {
 		itemList.innerHTML = '<li class="item-card"><h2>Failed to load music. Please try again.</h2></li>';
 	}
 };
+
 
 fetchMusic();

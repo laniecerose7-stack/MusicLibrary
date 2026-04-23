@@ -17,16 +17,21 @@
 				<a href="#" class="nav--item">Albums</a>
 				<button id="search-button" class="btn btn--cta" type="button">Search</button>
 			</nav>
+			<button id="hamburger--menu" class="hamburger--menu" aria-label="Toggle navigation menu" aria-expanded="false">
+				<span class="hamburger--line"></span>
+				<span class="hamburger--line"></span>
+				<span class="hamburger--line"></span>
+			</button>
 		</header>
 
 		<main class="container" aria-labelledby="page--title">
 			<div class="header--content">
 				<h1 id="page--title">Music Library</h1>
-				<p class="subtitle">Use the sorting filter to show genres.</p>
+				<p class="subtitle">Search any genre or use the sort filter to browse.</p>
 			</div>
 			<div class = "search--container">
 				<label for="search-input" class="visually-hidden">Search genres</label>
-				<input type="text" id="search-input" placeholder="Search genres..." aria-label="Search genres" />
+				<input type="text" id="search-input" placeholder="Search any genre or artist..." aria-label="Search genres" />
 			</div>
 			<div class="landing--page">
 				<h2>Welcome to the Music Library</h2>
@@ -40,6 +45,8 @@
 					<option value="za">Alphabetical Z to A</option>
 					<option value="newest">Newest to oldest</option>
 					<option value="oldest">Oldest to newest</option>
+					<option value="genre-az">Genre A to Z</option>
+					<option value="genre-za">Genre Z to A</option>
 				</select>
 			</section>
 
